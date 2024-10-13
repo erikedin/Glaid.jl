@@ -22,7 +22,8 @@
 
 module Glaid
 
-export BasePath, Shader
+export BasePath, Shader, ShaderProgram
+export ShaderCompilationException, ShaderProgramLinkException
 
 include("Shaders.jl")
 

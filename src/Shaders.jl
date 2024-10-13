@@ -30,12 +30,23 @@ end
 
 Base.joinpath(base::BasePath, parts::String...) = joinpath(base.basepath, parts...)
 
+struct ShaderCompilationException <: Exception
+    shaderpath::String
+    msg::String
+end
+
+struct ShaderProgramLinkException <: Exception
+    name::String
+    msg::String
+end
+
 struct Shader{T}
     id::GLuint
 end
 
 function Shader{T}(shaderbasepath::BasePath, path::String...) where {T}
-    source = open(joinpath(shaderbasepath, path...)) do io
+    shaderpath = joinpath(shaderbasepath, path...)
+    source = open(shaderpath) do io
         read(io, String)
     end
 
@@ -51,9 +62,40 @@ function Shader{T}(shaderbasepath::BasePath, path::String...) where {T}
         message = Vector{GLchar}(undef, maxlength)
         glGetShaderInfoLog(shaderid, maxlength, actuallength, message)
         infomessage =  String(message[1:actuallength[]])
-        throw(infomessage)
+        throw(ShaderCompilationException(shaderpath, infomessage))
     end
 
     # Return Shader{T} object
     Shader{T}(shaderid)
 end
+
+delete(shader::Shader{T}) where {T} = glDeleteShader(shader.id)
+
+struct ShaderProgram
+    id::GLuint
+end
+
+function ShaderProgram(name::String, vertexshader::Shader{GL_VERTEX_SHADER}, fragmentshader::Shader{GL_FRAGMENT_SHADER})
+    programid = glCreateProgram()
+
+    glAttachShader(programid, vertexshader.id)
+    glAttachShader(programid, fragmentshader.id)
+    glLinkProgram(programid)
+
+    linkstatus = Ref{GLint}(0)
+    glGetProgramiv(programid, GL_LINK_STATUS, linkstatus)
+    if linkstatus[] != GL_TRUE
+        maxlength = 4 * 1024
+        actuallength = Ref{GLsizei}()
+        message = Vector{GLchar}(undef, maxlength)
+        glGetProgramInfoLog(programid, maxlength, actuallength, message)
+        infomessage =  String(message[1:actuallength[]])
+        throw(ShaderProgramLinkException(name, infomessage))
+    end
+
+    delete(vertexshader)
+    delete(fragmentshader)
+
+    ShaderProgram(programid)
+end
+
