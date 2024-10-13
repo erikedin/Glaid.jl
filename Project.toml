@@ -1,0 +1,4 @@
+name = "Glaid"
+uuid = "628df62d-a8bb-40db-903b-fccf1f759927"
+authors = ["Erik Edin <erikedin@users.noreply.github.com>"]
+version = "0.1.0"
