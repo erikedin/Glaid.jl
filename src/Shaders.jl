@@ -20,10 +20,40 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 # SOFTWARE.
 
-module Glaid
+using ModernGL
 
-export BasePath, Shader
+struct BasePath
+    basepath::String
 
-include("Shaders.jl")
+    BasePath(m::Module, parts::Vararg{String}) = new(pkgdir(m, parts...))
+end
 
-end # module Glaid
+Base.joinpath(base::BasePath, parts::String...) = joinpath(base.basepath, parts...)
+
+struct Shader{T}
+    id::GLuint
+end
+
+function Shader{T}(shaderbasepath::BasePath, path::String...) where {T}
+    source = open(joinpath(shaderbasepath, path...)) do io
+        read(io, String)
+    end
+
+    shaderid = glCreateShader(T)
+    glShaderSource(shaderid, 1, pointer([convert(Ptr{GLchar}, pointer(source))]), C_NULL)
+    glCompileShader(shaderid)
+    # Check for errors
+    success = GLint[0]
+    glGetShaderiv(shaderid, GL_COMPILE_STATUS, success)
+    if success[] != GL_TRUE
+        maxlength = 4 * 1024
+        actuallength = Ref{GLsizei}()
+        message = Vector{GLchar}(undef, maxlength)
+        glGetShaderInfoLog(shaderid, maxlength, actuallength, message)
+        infomessage =  String(message[1:actuallength[]])
+        throw(infomessage)
+    end
+
+    # Return Shader{T} object
+    Shader{T}(shaderid)
+end

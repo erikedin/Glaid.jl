@@ -20,10 +20,26 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 # SOFTWARE.
 
-module Glaid
+@testset "Shaders" begin
 
-export BasePath, Shader
+@testset "Shader creation; Minimal shader; Shader is created OK" begin
+    # Arrange
+    shaderbasepath = BasePath(Glaid, "shaders")
 
-include("Shaders.jl")
+    # Act
+    shader = Shader{GL_VERTEX_SHADER}(shaderbasepath, "vs_minimal.glsl")
 
-end # module Glaid
+    # Assert
+    # The shader is non-zero on success, and zero on failure.
+    @test shader.id != 0
+end
+
+@testset "Shader creation; Invalid shader code; Shader throws exception" begin
+    # Arrange
+    shaderbasepath = BasePath(Glaid, "shaders")
+
+    # Act and Assert
+    @test_throws Exception Shader{GL_VERTEX_SHADER}(shaderbasepath, "error", "error_vs_empty.glsl")
+end
+
+end # Shaders

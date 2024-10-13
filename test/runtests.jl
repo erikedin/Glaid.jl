@@ -20,10 +20,14 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 # SOFTWARE.
 
-module Glaid
+using GLFW
+using ModernGL
+using Test
+using Glaid
 
-export BasePath, Shader
+# Create a window and its OpenGL context
+window = GLFW.Window(name = "Glaid test", visible = false)
 
-include("Shaders.jl")
+include("shaders_test.jl")
 
-end # module Glaid
+GLFW.DestroyWindow(window)
