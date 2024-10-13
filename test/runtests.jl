@@ -29,5 +29,6 @@ using Glaid
 window = GLFW.Window(name = "Glaid test", visible = false)
 
 include("shaders_test.jl")
+include("buffers_test.jl")
 
 GLFW.DestroyWindow(window)

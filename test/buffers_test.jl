@@ -20,13 +20,19 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 # SOFTWARE.
 
-module Glaid
+@testset "Buffers" begin
 
-export BasePath, Shader, ShaderProgram
-export ShaderCompilationException, ShaderProgramLinkException
-export BufferObject, bind, bufferdata
+@testset "Vertex BufferObject; Buffer 3 vertices; No exceptions" begin
+    # Arrange
+    vertices = GLfloat[
+        -0.5f0, -0.5f0, 0.0f0,
+         0.5f0, -0.5f0, 0.0f0,
+         0.0f0,  0.5f0, 0.0f0
+    ]
 
-include("Shaders.jl")
-include("buffers.jl")
+    # Act and Assert
+    vbo = BufferObject{GL_ARRAY_BUFFER}()
+    bufferdata(vbo, vertices, GL_DYNAMIC_DRAW)
+end
 
-end # module Glaid
+end # Buffers

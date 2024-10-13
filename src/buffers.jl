@@ -20,13 +20,20 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 # SOFTWARE.
 
-module Glaid
+struct BufferObject{T}
+    id::GLuint
 
-export BasePath, Shader, ShaderProgram
-export ShaderCompilationException, ShaderProgramLinkException
-export BufferObject, bind, bufferdata
+    function BufferObject{T}() where {T}
+        bufferid = Ref{GLuint}()
+        glGenBuffers(1, bufferid)
 
-include("Shaders.jl")
-include("buffers.jl")
+        new{T}(bufferid[])
+    end
+end
 
-end # module Glaid
+bind(bo::BufferObject{T}) where {T} = glBindBuffer(T, bo.id)
+
+function bufferdata(bo::BufferObject{T}, data::AbstractVector{GLfloat}, mode::GLenum) where {T}
+    bind(bo)
+    glBufferData(T, sizeof(data), data, mode)
+end
