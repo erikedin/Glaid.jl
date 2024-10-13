@@ -26,7 +26,7 @@ export BasePath, Shader, ShaderProgram
 export ShaderCompilationException, ShaderProgramLinkException
 export BufferObject, bind, bufferdata
 
-include("Shaders.jl")
+include("shaders.jl")
 include("buffers.jl")
 
 end # module Glaid
