@@ -24,7 +24,7 @@
 
 @testset "Shader creation; Minimal shader; Shader is created OK" begin
     # Arrange
-    shaderbasepath = BasePath(Glaid, "shaders")
+    shaderbasepath = BasePath(Glaid, "test", "shaders")
 
     # Act
     shader = Shader{GL_VERTEX_SHADER}(shaderbasepath, "vs_minimal.glsl")
@@ -36,7 +36,7 @@ end
 
 @testset "Shader creation; Minimal fragment shader; Shader is created OK" begin
     # Arrange
-    shaderbasepath = BasePath(Glaid, "shaders")
+    shaderbasepath = BasePath(Glaid, "test", "shaders")
 
     # Act
     shader = Shader{GL_VERTEX_SHADER}(shaderbasepath, "fs_minimal.glsl")
@@ -48,7 +48,7 @@ end
 
 @testset "Shader creation; Invalid shader code; Shader throws exception" begin
     # Arrange
-    shaderbasepath = BasePath(Glaid, "shaders")
+    shaderbasepath = BasePath(Glaid, "test", "shaders")
 
     # Act and Assert
     @test_throws ShaderCompilationException Shader{GL_VERTEX_SHADER}(shaderbasepath, "error", "error_vs_invalid.glsl")
@@ -56,7 +56,7 @@ end
 
 @testset "Program creation; Minimal vertex and fragment shaders; Program is created OK" begin
     # Arrange
-    shaderbasepath = BasePath(Glaid, "shaders")
+    shaderbasepath = BasePath(Glaid, "test", "shaders")
     vertexshader = Shader{GL_VERTEX_SHADER}(shaderbasepath, "vs_minimal.glsl")
     fragmentshader = Shader{GL_FRAGMENT_SHADER}(shaderbasepath, "fs_minimal.glsl")
 
@@ -70,7 +70,7 @@ end
 
 @testset "Program creation; Minimal vertex and fragment shaders; The shaders are attached" begin
     # Arrange
-    shaderbasepath = BasePath(Glaid, "shaders")
+    shaderbasepath = BasePath(Glaid, "test", "shaders")
     vertexshader = Shader{GL_VERTEX_SHADER}(shaderbasepath, "vs_minimal.glsl")
     fragmentshader = Shader{GL_FRAGMENT_SHADER}(shaderbasepath, "fs_minimal.glsl")
 
@@ -94,7 +94,7 @@ end
 
 @testset "Program creation; Unmatched variable in fragment shader; Program creation throws exception" begin
     # Arrange
-    shaderbasepath = BasePath(Glaid, "shaders")
+    shaderbasepath = BasePath(Glaid, "test", "shaders")
     vertexshader = Shader{GL_VERTEX_SHADER}(shaderbasepath, "error", "error_vs_unmatched_var.glsl")
     fragmentshader = Shader{GL_FRAGMENT_SHADER}(shaderbasepath, "error", "error_fs_unmatched_var.glsl")
 
