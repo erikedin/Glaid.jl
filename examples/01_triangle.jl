@@ -24,7 +24,7 @@ using Glaid
 using GLFW
 using ModernGL
 
-window = GLFW.Window("Glaid sample: 01 Triangle")
+window = GLFW.Window(; name = "Glaid sample: 01 Triangle")
 
 #
 # Set up shaders and the shader program
@@ -33,7 +33,7 @@ shaderbasepath = BasePath(Glaid, "examples", "shaders")
 vertexshader = Shader{GL_VERTEX_SHADER}(shaderbasepath, "01_vs.glsl")
 fragmentshader = Shader{GL_FRAGMENT_SHADER}(shaderbasepath, "01_fs.glsl")
 
-program = ShaderProgram(vertexshader, fragmentshader)
+program = ShaderProgram("main", vertexshader, fragmentshader)
 
 #
 # Set up vertex buffer and the array object.
@@ -44,7 +44,7 @@ vertices = GLfloat[
      0.0f0,  0.5f0, 0.0f0
 ]
 
-vbo = BufferObject{GL_VERTEX_BUFFER}()
+vbo = BufferObject{GL_ARRAY_BUFFER}()
 bufferdata(vbo, vertices, GL_STATIC_DRAW)
 
 

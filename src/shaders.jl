@@ -99,3 +99,6 @@ function ShaderProgram(name::String, vertexshader::Shader{GL_VERTEX_SHADER}, fra
     ShaderProgram(programid)
 end
 
+function use(program::ShaderProgram)
+    glUseProgram(program.id)
+end

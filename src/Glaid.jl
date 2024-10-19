@@ -22,7 +22,7 @@
 
 module Glaid
 
-export BasePath, Shader, ShaderProgram
+export BasePath, Shader, ShaderProgram, use
 export ShaderCompilationException, ShaderProgramLinkException
 export BufferObject, bind, bufferdata
 
