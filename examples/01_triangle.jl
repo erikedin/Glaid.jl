@@ -45,13 +45,18 @@ vertices = GLfloat[
 ]
 
 vbo = BufferObject{GL_ARRAY_BUFFER}()
-bufferdata(vbo, vertices, GL_STATIC_DRAW)
 
+floatsperposition = 3
+positionattribute = VertexAttribute(0, floatsperposition, GL_FLOAT, GL_FALSE, C_NULL)
+vertexdata = VertexData{GLfloat, GL_ARRAY_BUFFER}(vertices, VertexAttribute[positionattribute], vbo)
+
+vao = VertexArray{GL_TRIANGLES}(vertexdata)
 
 # Loop until the user closes the window
 while !GLFW.WindowShouldClose(window)
 	# Render here
     use(program)
+	draw(vao)
 
 	# Swap front and back buffers
 	GLFW.SwapBuffers(window)

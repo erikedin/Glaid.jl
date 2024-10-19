@@ -22,9 +22,9 @@
 
 #version 450 core
 
-layout (location = 0) in vec3 InPosition;
+out vec4 Color;
 
 void main()
 {
-    gl_Position = vec4(InPosition, 1.0);
+    Color = vec4(1.0, 0.0, 0.0, 0.0);
 }

@@ -25,6 +25,8 @@ module Glaid
 export BasePath, Shader, ShaderProgram, use
 export ShaderCompilationException, ShaderProgramLinkException
 export BufferObject, bind, bufferdata
+export VertexData, VertexAttribute, VertexArray
+export draw
 
 include("shaders.jl")
 include("buffers.jl")
